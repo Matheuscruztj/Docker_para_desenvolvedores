@@ -12,13 +12,15 @@ services:
             - dockercompose
         volumes:
             - ./mysql/schema.sql:/docker-entrypoint-initdb.d/init.sql
-    backend:
+    flask:
         depends_on:
             - db
         build: ./flask
         ports:
             - "5000:5000"
         restart: always
+        volumes:
+            - "C:\\Users\\Matheus\\Documents\\Docker_para_desenvolvedores\\5_compose\\6_bind_mount_compose\\flask:/app"
         networks:
             - dockercompose
 networks:

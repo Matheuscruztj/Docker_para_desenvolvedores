@@ -162,3 +162,6 @@ docker-compose up -d
 
 # Desligar
 docker-compose down
+
+# Detalhes do serviço que subiram
+docker-compose ps
