@@ -1,0 +1,19 @@
+docker build -t phpmessages .
+
+docker run -d -p 80:80 --name phpmessages_container phpmessages
+
+localhost:80
+
+Acessar os arquivos salvos no post do container
+http://localhost/messages/msg-0.txt
+---
+Iniciando com volume anonimo
+
+docker run -d -p 80:80 --name phpmessages_container --rm -v /data phpmessages
+
+Iniciando com volume nomeado e persistente
+docker run -d -p 80:80 --name phpmessages_container0 -v phpvolume:/var/www/html --rm 
+phpmessages
+
+Iniciando com volume bind
+docker run -d -p 80:80 --name phpmessages_container -v C:\Users\Matheus\Documents\Docker\2_volumes\messages:/var/www/html/messages --rm phpmessages

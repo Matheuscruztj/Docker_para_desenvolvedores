@@ -1,0 +1,164 @@
+# Executar container em background -> -d
+docker run -d nginx
+
+# Especificar a porta
+docker run -d -p 80:80 nginx
+
+# Parar container
+normal -> docker stop <id>
+executando (forçado) -> docker stop -f <id>
+
+# Iniciando
+docker start <id>
+
+# Definindo o nome do container
+docker run -d -p 80:80 --name nginx_app nginx
+
+# Acessando log
+Dependendo do tipo de container, é possível obter o histórico da aplicação
+docker logs <id>
+
+# Removendo o container
+docker -rm <id>
+docker -rm -f <id>
+
+# Removendo a imagem
+docker -rmi <id>
+docker -rmi -f <id>
+
+# Executando uma imagem
+docker build <diretório da imagem>
+docker run <id imagem criada>
+
+# Download de imagens
+docker pull <imagem>
+docker pull <image>:<versão>
+
+# Helper
+docker run --help
+
+# Multiplas aplicações do mesmo container? Só mudar a porta
+
+# Alterando o nome da imagem e tag
+docker tag <nome> <id_imagem>
+docker tag <id_imagem> <nome>:<tag>
+
+# Listar containers
+docker ps
+docker ps -a -> todos
+
+# Listar imagens
+docker imagens
+
+# Nomeando imagem no build
+docker build -t meu_app .
+docker build -t <nome>:<tag> .
+
+# Comando start interativo
+docker start -it <container> -> se o container quando for iniciando tiver algum console, dá para visualização as suas interações
+
+# Remoção de recursos não utilizados (container, imagem e network)
+docker system prune
+
+# Removendo container após utilizar -> se der stop no servidor, ele some
+docker run -d -p 80:80 --name nginx_app nginx --rm
+
+# Copiando arquivos entre containers
+docker cp <nome_container>:/diretorio/arquivo ./<pasta do sistema atual>/
+
+# Verificando informações de processamento
+docker top <container>
+
+# Verificar dados de um container (informações de configuração)
+docker inspect <container>
+
+# Verificando processamento geral do docker
+docker stats
+
+# Autenticação no Docker Hub
+docker login
+docker logout
+
+# Enviando imagem para o Docker Hub
+docker push <imagem>
+* precisa criar a imagem com o mesmo nome do seu repositório
+docker build -t matheus/node_teste . 
+docker push matheus/node_teste
+
+# Atualizando imagem para o Docker Hub
+docker build -t matheus/<image>:<versão>
+docker push matheus/<image>:<versão>
+
+-----
+Listar volumes
+docker volumes ls
+
+Achar volume de um container?
+docker inspect <id_container>
+
+# Criando com volume anonimo
+docker run -d -p 80:80 -v /data nginx
+
+Criar volume Nomeado
+docker run -d -p 80:80 -v nome_do_volume:/data nginx
+
+Obs: se eu criar 2 containers diferentes que possuem o mesmo volume (alias e caminho)
+Eles vão possuir recurso compartilhado
+
+Criar volume bind (compartilhado diretamente com uma pasta do SO)
+docker run -d -p 80:80 --name phpmessages_container -v C:\Users\Matheus\Documents\Docker\2_volumes\messages:/var/www/html/messages --rm phpmessages
+
+Bind mount para persistir e atualizar o projeto em tempo real
+docker run -d -p 80:80 --name phpmessages_container -v C:\Users\Matheus\Documents\Docker\2_volumes\:/var/www/html/ --rm phpmessages
+
+Criar volume
+docker volume create <nome>
+reaproveitando o volume: docker run -d -p 80:80 --name phpmessages_container -v volume_teste:/var/www/html/messages --rm phpmessages
+
+Inspecionando volume
+docker volume inspect <nome_volume>
+
+Remover volume
+docker volume rm <nome>
+docker volume prune (em massa)
+
+Criando volume apenas leitura -> se tentar fazer alguma operação de modificação no diretório vai dar erro
+docker run -d -p 80:80 --name phpmessages_container -v volume_teste:/var/www/html/messages:ro --rm phpmessages
+
+---
+Network - Redes
+
+Listando as redes
+docker network ls
+
+Criando uma rede
+docker network create <nome>
+
+Especificando o tipo de driver
+docker network create -d macvlan meumacvlan
+
+Removendo uma rede
+docker network rm <nome>
+
+Removendo rede em massa (recurso que não estão sendo utilizados)
+docker network prune
+---
+Conectando container a uma rede
+network network connect <nome rede alvo> <id container>
+
+Desconectar um container de uma rede
+network network disconnect <nome rede alvo> <id container>
+
+Inspecionando redes
+docker network inspect <nome>
+---
+Docker compose
+
+# Subir
+docker-compose up
+
+# Subir em background
+docker-compose up -d
+
+# Desligar
+docker-compose down
